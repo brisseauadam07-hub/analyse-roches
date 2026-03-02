@@ -1,0 +1,43 @@
+{% extends base.html %}
+
+{% block title %}Résultats{% endblock %}
+
+{% block content %}
+    h2Résultats de l'analyseh2
+
+    div class=results-container
+        div class=result-card
+            h3Informations généralesh3
+            pstrongNom de la roche strong {{ results.roche_name or Non spécifié }}p
+            pstrongNombre total de pixels strong {{ results.total_pixels }}p
+            pstrongMoyenne pondérée strong {{ %.0fformat(results.weighted_average) }}p
+            pstrongCatégorie dominante strong {{ results.dominant_category }}p
+        div
+    div
+
+    div class=images-container
+        div class=image-card
+            h3Histogramme (Fig. 1)h3
+            img src={{ url_for('result_files', filename=results.hist_path.split('')[-1]) }} alt=Histogramme
+        div
+
+        div class=image-card
+            h3Niveaux de gris (Fig. 2)h3
+            img src={{ url_for('result_files', filename=results.levels_path.split('')[-1]) }} alt=Niveaux de gris
+        div
+    div
+
+    form action={{ url_for('generate_pdf') }} method=post style=margin-top 20px;
+        input type=hidden name=total_pixels value={{ results.total_pixels }}
+        input type=hidden name=weighted_average value={{ results.weighted_average }}
+        input type=hidden name=dominant_category value={{ results.dominant_category }}
+        input type=hidden name=hist_path value={{ results.hist_path }}
+        input type=hidden name=levels_path value={{ results.levels_path }}
+        input type=hidden name=roche_name value={{ results.roche_name or '' }}
+        button type=submit class=btnTélécharger le résumé en PDFbutton
+    form
+
+    div style=margin-top 20px;
+        a href={{ url_for('index') }} class=btnNouvelle analysea
+    div
+{% endblock %}

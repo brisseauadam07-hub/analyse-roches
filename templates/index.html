@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analyse de roche</title>
+</head>
+<body>
+    <h1>Upload une image de roche</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/png, image/jpeg">
+        <input type="submit" value="Analyser">
+    </form>
+    {% if results %}
+        <h2>Résultat : {{ results.dominant_category }}</h2>
+        <p>Moyenne pondérée : {{ "%.2f"|format(results.weighted_average) }}</p>
+        <img src="{{ url_for('static', filename='histogram.png') }}" alt="Histogramme" width="500">
+        <img src="{{ url_for('static', filename='bar_chart.png') }}" alt="Bar Chart" width="500">
+    {% endif %}
+</body>
+</html>
